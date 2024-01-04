@@ -1,6 +1,6 @@
 const express = require('express');
 
-const signController = require('../controllers/userReg');
+const signController = require('../controllers/signup&signin');
 const authController = require('../middleware/authentication');
 const { getHomepage } = require('../controllers/mainPage');
 

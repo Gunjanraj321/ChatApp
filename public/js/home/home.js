@@ -124,3 +124,5 @@ async function Forgotpassword(e) {
         }
     }
 }
+console.log(signup_form);
+console.log(signin_form);

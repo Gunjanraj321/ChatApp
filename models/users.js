@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../util/db");
+const Sequelize = require('sequelize');
+const sequelize = require('../util/database')
 
 const User = sequelize.define(
   "User",
@@ -12,7 +12,6 @@ const User = sequelize.define(
     },
     name: {
       type: Sequelize.STRING,
-      unique: true,
       allowNull: false,
     },
     email: {
@@ -21,21 +20,25 @@ const User = sequelize.define(
     },
     phonenumber: {
       type: Sequelize.BIGINT(10),
-      allowNull: false,
       unique: true,
+      allowNull: false,
     },
     imageUrl: {
       type: Sequelize.INTEGER,
+      allowNull: true,
+    },
+    password: {
+      type: Sequelize.TEXT,
       allowNull: false,
     },
     date_time: {
-      type: Sequelize.TEXT,
+      type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: Sequelize.NOW,
+      defaultValue: Sequelize.NOW, // You can set a default value if needed
     },
   },
   {
     timestamps: false,
   }
 );
-module.exports = User;
+module.exports=User;

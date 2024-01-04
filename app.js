@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv').config();
 
-const sequelize = require('./util/db');
+const sequelize = require('./util/database');
 const User = require('./models/users');
 
 const app = express();
@@ -19,7 +19,9 @@ app.use(express.static('public'));
 app.use(cookieParser());
 
 const mainRoute = require('./routes/home');
+const userRoute = require('./routes/user')
 app.use('/', mainRoute);
+app.use('/user', userRoute);
 
 const port = process.env.PORT || 3000;
 

@@ -1,3 +1,3 @@
 exports.getHomepage = (req, res, next) =>{
-  res.sendFile('index.html',{root:'views'});
+  res.sendFile('home.html',{root:'views'});
 }
