@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+*{
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    background-color: #343a40;
+    color: #ffffff;
+  }
+
+  .navbar {
+    background-color: #5f6368;
+  }
+
+  .navbar-brand img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .navbar-brand h2 {
+    margin: 0;
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #ffffff;
+  }
+
+  .container {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  .lead {
+    font-size: 1.5rem;
+  }
+
+  .btn-outline-primary,
+  .btn-dark {
+    margin-top: 15px;
+  }
+
+  .modal-content {
+    background-color: #343a40;
+    color: #ffffff;
+  }
+
+  .modal-header {
+    border: 0;
+  }
+
+  .modal-body input,
+  .modal-body label {
+    color: #ffffff;
+  }
+
+  .btn-close-white {
+    color: #ffffff;
+  }
+
+  .background-image-container {
+    background: url("/images/background.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .bg-secondary {
+    background-color: #6c757d;
+  }
+
+  .fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
