@@ -25,7 +25,7 @@ const User = sequelize.define(
     },
     imageUrl: {
       type: Sequelize.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
     password: {
       type: Sequelize.TEXT,
@@ -34,7 +34,7 @@ const User = sequelize.define(
     date_time: {
       type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: Sequelize.NOW, // You can set a default value if needed
+      defaultValue: Sequelize.NOW, 
     },
   },
   {

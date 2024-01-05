@@ -4,10 +4,11 @@ const jwt = require("jsonwebtoken");
 const secretKey = process.env.SECRET_KEY;
 const { Op } = require("sequelize");
 
+console.log(secretKey);
 // signup user and signing the token using jwt and passing in the cookie
 exports.userSignup = async (request, response, next) => {
   try {
-    const { name, email, phonenumber, imageUrl, password } = request.body;
+    const { name, email, phonenumber,imageUrl, password } = request.body;
     let userExist = await User.findOne({
       where: {
         [Op.or]: [{ email }, { phonenumber }],
@@ -19,7 +20,6 @@ exports.userSignup = async (request, response, next) => {
         name,
         email,
         phonenumber,
-        imageUrl,
         password: hash,
       });
       const token = jwt.sign({ userId: user.id }, secretKey, {

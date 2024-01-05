@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const sequelize = require('./util/database');
 const User = require('./models/users');
+const Forgotpassswords = require('./models/forgot-password');
 
 const app = express();
 
@@ -18,8 +19,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(cookieParser());
 
+User.hasMany(Forgotpassswords);
+Forgotpassswords.belongsTo(User , {constraints: true,onDelete: "CASCADE"});
+
 const mainRoute = require('./routes/home');
-const userRoute = require('./routes/user')
+const userRoute = require('./routes/user');
 app.use('/', mainRoute);
 app.use('/user', userRoute);
 
