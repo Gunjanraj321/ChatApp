@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const secretKey = process.env.SECRET_KEY;
 const { Op } = require("sequelize");
 
-console.log(secretKey);
 // signup user and signing the token using jwt and passing in the cookie
 exports.userSignup = async (request, response, next) => {
   try {

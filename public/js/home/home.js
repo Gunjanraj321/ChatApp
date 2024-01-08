@@ -1,7 +1,5 @@
 import helperFunctions from "/js/home/helperFunctions.mjs";
 
-const signup_form = document.getElementById("signup_form")
-
 //ON  SIGNUP
 const signupElements = {
     name: signup_form.querySelector('input[name="Name"]'),
