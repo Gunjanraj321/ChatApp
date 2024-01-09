@@ -1,251 +1,283 @@
-const User = require('../models/user');
-const ChatHistory = require('../models/chat-history');
-const Group = require('../models/groups');
+const User = require('../models/users');
+const ChatHistory = require('../models/chat-history')
+const Group = require('../models/groups')
 const awsService = require('../services/awsservices');
 const { Op } = require('sequelize');
 
 
-exports.saveChatHistory = async (req, res, next) => {
-    try{
-        const user = req.user;
-        const { message , GroupId } = req.body;
-        if(GroupId == 0) {
+// saving the chat history in the db
+exports.saveChatHistory = async (request, response, next) => {
+    try {
+        const user = request.user;
+        const { message, GroupId } = request.body;
+        if (GroupId == 0) {
             await user.createChatHistory({
                 message,
             })
-        }else{
+        } else {
             await user.createChatHistory({
                 message,
                 GroupId,
             })
         }
-        return res.status(200).json({ message: "Message saved to database successfully"});
-    }catch(err) {
-        return res.status(500).json({message: " Internal server Error!"})
-    }
-}
 
-exports.getUserChatHistory = async (req , res, next)=>{
-    try{
-        const user = req.user;
-        const ChatHistories = await user.getChatHistories();
-        return res.status(200).json({ chat:ChatHistories , message:'user chat History fetched'})
-    }catch(err){
-        return res.status(500).json({message:"intenral server error!"})
+        return response.status(200).json({ message: "Message saved to database succesfully" })
+
+    } catch (error) {
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
 
-exports.getAllChatHistory = async( req, res, next)=>{
-    try{
-        const lastMessageId = req.query.lastMessageId || 0;
-        const ChatHistories = await ChatHistory.findAll({
-            include :[
+// getting the User chat history from the db
+exports.getUserChatHistory = async (request, response, next) => {
+    try {
+        const user = request.user;
+        const chatHistories = await user.getChatHistories();
+        return response.status(200).json({ chat: chatHistories, message: "User chat History Fetched" })
+
+    } catch (error) {
+        return response.status(500).json({ message: 'Internal Server error!' })
+    }
+}
+
+
+//getting all the chat-histories related to all the users
+exports.getAllChatHistory = async (request, response, next) => {
+    try {
+        const lastMessageId = request.query.lastMessageId || 0;
+        const chatHistories = await ChatHistory.findAll({
+            include: [
                 {
-                    model:User,
-                    attributes: ['id','name','date_time']
+                    model: User,
+                    attributes: ['id', 'name', 'date_time']
                 }
-            ] ,
-            order: [['date_time','ASC']],
-            where:{
-                GroupId:null,
-                id:{
-                    [Op.gt]:lastMessageId
+            ],
+            order: [['date_time', 'ASC']],
+            where: {
+                GroupId: null,
+                id: {
+                    [Op.gt]: lastMessageId
                 }
             }
         });
-        const chats = ChatHistories.map((ele) => {
+        const chats = chatHistories.map((ele) => {
             const user = ele.User;
             return {
-                messageId : ele.id,
+                messageId: ele.id,
                 message: ele.message,
-                isImage:ele.isImage,
-                name:user.name,
-                userId:user.id,
-                date_time:ele.date_time
+                isImage: ele.isImage,
+                name: user.name,
+                userId: user.id,
+                date_time: ele.date_time
             }
         })
-        return res.status(200).json({chats,message:"User chat History fetched"})
-    }catch(err) {
-        console.error(err);
-        return res.status(500).json({message: "Internal Server Error"})
+        return response.status(200).json({ chats, message: "User chat History Fetched" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.getcurrentuser = async (req, res, next) =>{
-    
-        const user = req.user;
-        res.json({userId: user.id,user});
-    
+
+//getting current user
+exports.getcurrentuser = async (request, response, next) => {
+    const user = request.user;
+    response.json({ userId: user.id ,user});
 }
 
-exports.getAlluser = async (req, res, next)=>{
-    try{
-        const user = req.user;
+
+//getting all  the user except the current user
+exports.getAlluser = async (request, response, next) => {
+    try {
+        const user = request.user;
         const users = await User.findAll({
-            attributes:['id','name','imageUrl'],
-            where:{
-                id:{
-                    [Op.not] :user.id
+            attributes: ['id', 'name', 'imageUrl'],
+            where: {
+                id: {
+                    [Op.not]: user.id
                 }
             }
-        })
-        return res.status(500).json({users, message:"All user successfully fetchd"});
-    }catch(err){
-        console.log(err);
-        return res.status(500).json({message: ' Internal Server Error'})
+        });
+        return response.status(200).json({ users, message: "All users succesfully fetched" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.createGroup = async (req, res, next)=>{
-    try{
-        const user= req.user;
-        const { name, membersNo, membersIds} = req.body;
+
+//creating the group and making the user as admin and mapping the element changing to the valid form (int) and make the user id associated with group
+exports.createGroup = async (request, response, next) => {
+    try {
+        const user = request.user;
+        const { name, membersNo, membersIds } = request.body;
         const group = await user.createGroup({
             name,
             membersNo,
-            Admin: user.id,
+            AdminId: user.id
         })
         membersIds.push(user.id);
-        await group.addUsers(membersIds.map((ele)=>{
+        await group.addUsers(membersIds.map((ele) => {
             return Number(ele)
         }));
-        return res.status(200).json({group, message: "Group is successfully created"})
-    }catch(err){
-        console.log(err);
-        return res.status(500).json({message:'internal server error'})
+        return response.status(200).json({ group, message: "Group is succesfylly created" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.updateGroup = async (req, res, next) =>{
-    try{
-        const user = req.user;
-        const {groupId} = req.query;
-        const group = await Group.findOne({ where :{id:Number(groupId)}});
-        const { name , membersNo, membersIds} = req.body;
+
+//updating the group with the user in it 
+exports.updateGroup = async (request, response, next) => {
+    try {
+        const user = request.user;
+        const { groupId } = request.query;
+        const group = await Group.findOne({ where: { id: Number(groupId) } });
+        const { name, membersNo, membersIds } = request.body;
         const updatedGroup = await group.update({
             name,
             membersNo,
-            AdminId: user.id,
-
+            AdminId: user.id
         })
         membersIds.push(user.id);
         await updatedGroup.setUsers(null);
         await updatedGroup.addUsers(membersIds.map((ele) => {
-            return Number(ele);
-        }))
-        return res.status(200).json({updatedGroup, message: " Group is succesfully updated"})
-    }catch(err){
-        console.log(err);
-        return res.status(500).json({message: 'Internal server error'});
+            return Number(ele)
+        }));
+        return response.status(200).json({ updatedGroup, message: "Group is succesfylly updated" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.getAllgroups = async (req, res, next)=>{
-    try{
+// getting all the groups from the db
+exports.getAllgroups = async (request, response, next) => {
+    try {
         const groups = await Group.findAll();
-        return res.status(200).json({groups , message:"all grup fetched successfully"})
-    }catch(err) {
-        console.log(err);
-        return req.status(500).json({message:"internal server error"})
+        return response.status(200).json({ groups, message: "All groups succesfully fetched" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.getGroupChatHistory = async (req , res, next)=>{
-    try{
-        const {groupId} = req.query;
-        const ChatHistories = await ChatHistory.findAll({
+
+// get chat history related to the group
+exports.getGroupChatHistory = async (request, response, next) => {
+    try {
+        const { groupId } = request.query;
+        const chatHistories = await ChatHistory.findAll({
             include: [
                 {
-                    model:User,
-                    attributes: ['id','name','date_time']
+                    model: User,
+                    attributes: ['id', 'name', 'date_time']
                 }
             ],
             order: [['date_time', 'ASC']],
-            where : {
+            where: {
                 GroupId: Number(groupId),
             }
-        })
-        const chats = ChatHistories.map((ele) => {
+        });
+        const chats = chatHistories.map((ele) => {
             const user = ele.User;
             return {
-                message: ele.message,
                 messageId: ele.id,
+                message: ele.message,
                 isImage: ele.isImage,
                 name: user.name,
                 userId: user.id,
-                date_time: ele.date_time,
+                date_time: ele.date_time
             }
         })
-        return res.status(200).json({ chats, message:"User chat history fetched"})
-    }catch(err) {
-        console.log(err);
-        return res.status(500).json({ message: "Internal Server Error"});
+        return response.status(200).json({ chats, message: "User chat History Fetched" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.getGroupById = async (req, res, next)=>{
-    try{
-        const {groupId} = req.query;
-        const group = await Group.findOne({ where : {id: Number(groupId)}})
-        res.status(200).json({ group , message: "group details succeefullu fetched"})
-    }catch(err){
-        console.log(err);
-        return res.status(500).json({message: 'Internal Server Error'})
+// getting groups by their id
+exports.getGroupbyId = async (request, response, next) => {
+    try {
+        const { groupId } = request.query;
+        const group = await Group.findOne({ where: { id: Number(groupId) } });
+        response.status(200).json({ group, message: "Group details succesfully fetched" })
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.getMygroups = async (req, res, next)=>{
-    try{
-        const user = req.user;
+// getting all the groups related to the current user 
+exports.getMygroups = async (request, response, next) => {
+    try {
+        const user = request.user;
         const groups = await user.getGroups();
-        return res.status(200).json({message: 'All groups succesfully fetched'})
-    }catch(err){
-        console.log(err);
-        return res.status(500).json({message:'Internal server Error'})
+        return response.status(200).json({ groups, message: "All groups succesfully fetched" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.getGroupMembersbyId = async (req, res, next)=>{
-    try{
-        const { groupId} = req.query;
-        const group = await Group.findOne({where : {id: Number(groupId)}})
+
+// getting all the members of the group and transform the user data with attribute (namee, id) and sends the json response
+exports.getGroupMembersbyId = async (request, response, next) => {
+    try {
+        const { groupId } = request.query;
+        const group = await Group.findOne({ where: { id: Number(groupId) } });
         const AllusersData = await group.getUsers();
-        const users = AllusersData.map((ele)=> {
+        const users = AllusersData.map((ele) => {
             return {
-                id:ele.id,
+                id: ele.id,
                 name: ele.name,
             }
         })
-        res.status(200).json({users , message: "Group members name successfully fetched"})
-    }catch(err) {
-        console.log(err);
-        return res.status(500).json({message:'Internal Server Error'})
+
+        response.status(200).json({ users, message: "Group members name succesfully fetched" })
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
 
-exports.saveChatImages = async(req, res, next) =>{
-    try{
-        const user = req.user;
-        const image = req.filel
-        const {GroupId} = req.body;
+
+//saving the images in the s3bucket and also adding the image to chat history related to the common group/ specific group 
+exports.saveChatImages = async (request, response, next) => {
+    try {
+        const user = request.user;
+        const image = request.file;
+        const { GroupId } = request.body;
         const filename = `chat-images/group${GroupId}/user${user.id}/${Date.now()}_${image.originalname}`;
-        const imageUrl = await awsService.uploadToS3(image.buffer, filename);
-        if(GroupId == 0) {
+        const imageUrl = await awsService.uploadToS3(image.buffer, filename)
+        if (GroupId == 0) {
             await user.createChatHistory({
                 message: imageUrl,
-                isImage:true,
+                isImage: true
             })
-        }else{
+        } else {
             await user.createChatHistory({
                 message: imageUrl,
                 GroupId,
-                isImage: true,
+                isImage: true
             })
         }
-        return res.status(200).json({ message: "image saved to database successfully"})
-    }catch(err){
-        console.log(err);
-        return res.status(500).json({message:"internal server error"})
+
+        return response.status(200).json({ message: "image saved to database succesfully" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
     }
 }
+

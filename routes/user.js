@@ -1,7 +1,6 @@
 //importing package
 const express = require('express');
 
-
 //importing modules
 const userControler = require('../controllers/user')
 const passwordController = require('../controllers/password')
@@ -33,17 +32,14 @@ router.post('/post-message',authController.authorization,userControler.saveChatH
 router.post('/post-image',authController.authorization,upload,userControler.saveChatImages)
 
 
-
 //route definition for getting user 
 router.get('/get-user',authController.authorization,userControler.getcurrentuser)
 router.get('/get-users',authController.authorization,userControler.getAlluser)
 
 
-
 //route defintion for chat-history
 router.get('/get-message',authController.authorization,userControler.getUserChatHistory);
 router.get('/get-messages',userControler.getAllChatHistory);
-
 
 
 //route definition for groups
@@ -54,7 +50,6 @@ router.get('/get-mygroups',authController.authorization,userControler.getMygroup
 router.get('/get-group',userControler.getGroupbyId)
 router.get('/get-group-messages',userControler.getGroupChatHistory)
 router.get('/get-group-members',userControler.getGroupMembersbyId)
-
 
 
 //route definition for redirecting to main page

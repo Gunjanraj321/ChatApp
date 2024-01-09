@@ -327,7 +327,6 @@ async function showingGroupDetails(e) {
 }
 
 
-
 async function createGroup(e) {
     try {
         if (create_group_form.checkValidity()) {

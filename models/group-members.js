@@ -3,12 +3,13 @@ const sequelize = require('../util/database');
 
 const Groupmember = sequelize.define('GroupMembers',{
     id:{
-        type: Sequelize.INTEGER,
+        type:Sequelize.INTEGER,
         autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    }
-},{
-    timestamps:false,
-});
-module.exports = Groupmember;
+        allowNull:false,
+        primaryKey:true
+    }},
+    {
+        timestamps: false
+    });
+
+module.exports=Groupmember;
