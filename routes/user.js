@@ -1,43 +1,63 @@
+//importing package
 const express = require('express');
 
-const userController = reuire('../controllers/user');
-const passwordController = require('../controllers/password');
-const mainPageController = require('../controllers/mainPage');
-const signController = require('../controllers/signup&signin');
-const authController = require('../middleware/authentication');
-const multerMiddleware = require('../middleware/multer');
+
+//importing modules
+const userControler = require('../controllers/user')
+const passwordController = require('../controllers/password')
+const mainPageController = require('../controllers/mainPage')
+const signController = require('../controllers/signup&signin')
+const authController = require('../middleware/authentication')
+const multerMiddleware = require('../middleware/multer')
 const upload = multerMiddleware.multer.single('image');
 
-const { getHomepage } = require('../controllers/mainPage');
-
+//initializing route
 const router = express.Router();
 
-router.post("/signup",signController.userSignup);
-router.post("/signin",signController.userSignin);
 
-router.post('/forgotpassword', passwordController.userResetpasswordMail);
-router.get('/reset/:forgotId',passwordController.userResetpasswordform);
-router.post('/password-reset',passwordController.userResetpassword);
+//route definition for signin and signup
+router.post('/signup',signController.userSignup);
+router.post('/signin',signController.userSignin);
 
 
-router.post('/post-message',authController.authorization,userController.saveChatHistory);
-router.post('/post-image',authController.authorization,upload,userController.getAlluser);
 
-router.get('/get-user',authController.authorization,userController.getcurrentuser)
-router.get('/get-users',authController.authorization,userController.getAlluser)
-
-router.get('/get-message',authController.authorization,userController.getUserChatHistory)
-router.get('/get-messages',userController.getAllchatHistory);
-
-router.post('/create-group',authController.authorization,userController.createGroup)
-router.post('/update-group',authController.authorization,userController.updateGroup)
-router.get('/get-groups',userController.getAllgroups)
-router.get('/get-mygroups',authController.authorization,userController.getMygroups)
-router.get('/get-group',userController.getGroupbyId)
-router.get('/get-group-messages',userController.getGroupChatHistory)
-router.get('/get-group-members',userController.getGroupMembersbyId)
+//route definition for password
+router.post('/forgotpassword',passwordController.userResetpasswordMail)
+router.get('/reset/:forgotId', passwordController.userResetpasswordform)
+router.post('/password-reset',passwordController.userResetpassword)
 
 
-router.get("/",mainPageController.getMainpage);
+
+//route definition for posting mesage and image
+router.post('/post-message',authController.authorization,userControler.saveChatHistory)
+router.post('/post-image',authController.authorization,upload,userControler.saveChatImages)
+
+
+
+//route definition for getting user 
+router.get('/get-user',authController.authorization,userControler.getcurrentuser)
+router.get('/get-users',authController.authorization,userControler.getAlluser)
+
+
+
+//route defintion for chat-history
+router.get('/get-message',authController.authorization,userControler.getUserChatHistory);
+router.get('/get-messages',userControler.getAllChatHistory);
+
+
+
+//route definition for groups
+router.post('/create-group',authController.authorization,userControler.createGroup)
+router.post('/update-group',authController.authorization,userControler.updateGroup)
+router.get('/get-groups',userControler.getAllgroups)
+router.get('/get-mygroups',authController.authorization,userControler.getMygroups)
+router.get('/get-group',userControler.getGroupbyId)
+router.get('/get-group-messages',userControler.getGroupChatHistory)
+router.get('/get-group-members',userControler.getGroupMembersbyId)
+
+
+
+//route definition for redirecting to main page
+router.get('/',mainPageController.getMainpage)
 
 module.exports = router;
