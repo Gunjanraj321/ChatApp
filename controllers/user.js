@@ -228,7 +228,7 @@ exports.saveChatImages = async(req, res, next) =>{
     try{
         const user = req.user;
         const image = req.filel
-        const {GroupId} = req,body;
+        const {GroupId} = req.body;
         const filename = `chat-images/group${GroupId}/user${user.id}/${Date.now()}_${image.originalname}`;
         const imageUrl = await awsService.uploadToS3(image.buffer, filename);
         if(GroupId == 0) {
