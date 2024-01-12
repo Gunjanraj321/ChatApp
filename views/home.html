@@ -14,34 +14,33 @@
 
 <body class="bg-dark">
   <!-- Nav bar -->
-<nav class="navbar navbar-expand-lg text-light" style="background-color: #5f6368">
-  <div class="container-fluid p-2">
-    <a class="navbar-brand" style="margin-left: 10px;" href="#">
-      <img src="/images/chatlogo.jpg" alt="brand-image" class="img-fluid" width="50px" height="50px">
-    </a>
-    <h2 class="mb-0 d-flex flex-column align-items-center">
-      <span class="fw-bold fst-italic text-light">ChitChatEasy</span>
-    </h2>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" style="margin-right: 50px;" id="navmenu">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a href="#" class="nav-link fs-4 text-light" data-bs-toggle="modal" data-bs-target="#signup_modal"
-            aria-controls="signup_modal">Sign up</a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link fs-4 text-light" data-bs-toggle="modal" data-bs-target="#signin_modal" aria-expanded="true"
-            aria-controls="signin_modal">Sign in</a>
-        </li>
-      </ul>
+  <nav class="navbar navbar-expand-lg text-light" style="background-color: #2c3e50;">
+    <div class="container-fluid p-2">
+      <a class="navbar-brand" style="margin-left: 10px;" href="#">
+        <img src="/images/chatlogo.jpg" alt="brand-image" class="img-fluid" width="50px" height="50px">
+      </a>
+      <h2 class="mb-0 d-flex flex-column align-items-center">
+        <span class="fw-bold fst-italic text-light">chatApp</span>
+      </h2>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" style="margin-right: 50px;" id="navmenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a href="#" class="nav-link fs-4 text-light" data-bs-toggle="modal" data-bs-target="#signup_modal"
+              aria-controls="signup_modal">Sign up</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link fs-4 text-light" data-bs-toggle="modal" data-bs-target="#signin_modal" aria-expanded="true"
+              aria-controls="signin_modal">Log in</a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-
-  <div class="container text-center">
+  <div class="container text-center" style="background-color: #34495e; padding: 50px;">
     <div class="d-sm-flex align-items-center justify-content-between">
       <div class="col-md-7">
         <img src="/images/chatting-removebg.png" alt="" class="img-fluid d-none d-sm-block">
@@ -50,14 +49,12 @@
         <p class="lead my-4 ">
           "Connect, Communicate, Chat - Your World, Your Conversation"
         </p>
-        <button class="btn btn-outline-primary btn-lg mb-3 mb-lg-0" data-bs-toggle="modal"
+        <button class="btn btn-outline-info btn-lg mb-3 mb-lg-0" data-bs-toggle="modal"
           data-bs-target="#signup_modal">Sign up for free</button>
-        <button class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#signin_modal" >Already
-          have an account ?</button>
+        <button class="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#signin_modal">Already
+          have an account?</button>
       </div>
-
     </div>
-
   </div>
   </div>
   <div class=" p-5"></div>
@@ -124,7 +121,7 @@
     <div class="modal-dialog modal-dialog-centered ">
       <div class="modal-content background-image-container">
         <div class="modal-header border-0 text-light">
-          <h2 id="formhead">Sign in here</h2>
+          <h2 id="formhead">Log in here</h2>
           <button class="btn btn-close btn-close-white" data-bs-dismiss="modal" data-bs-target="#signin_modal"></button>
           
         </div>
@@ -140,7 +137,7 @@
               <input type="password" class="form-control" name="Password" placeholder="Password">
             </div>
             <div class="form-group text-center mt-4">
-              <input type="submit" class="btn btn-primary submit" value="Sign in">
+              <input type="submit" class="btn btn-primary submit" value="Log in">
             </div>
             <div class="form-group text-center mt-2">
               <a href="#" id="forgot-password-button" data-bs-dismiss="modal" data-bs-toggle="modal"

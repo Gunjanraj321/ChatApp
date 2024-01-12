@@ -20,9 +20,7 @@ exports.saveChatHistory = async (request, response, next) => {
                 GroupId,
             })
         }
-
         return response.status(200).json({ message: "Message saved to database succesfully" })
-
     } catch (error) {
         return response.status(500).json({ message: 'Internal Server error!' })
     }

@@ -34,14 +34,12 @@ const userRoute = require('./routes/user');
 const accessLogStream = fs.createWriteStream('./access.log', { flags: 'a' });
 
 
-
 //instantiating the application and initializing the morgan for access log and defining the cors and json format data and urlencoded data and parsing cookie
 const app = express();
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(cors({
   origin: '*',
   methods:['GET','POST'],
-
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -49,10 +47,9 @@ app.use(express.static('public'));
 app.use(cookieParser());
 
 
-
 //defining the route definition
-app.use('/user',userRoute)
-app.use(mainRoute)
+app.use('/user',userRoute);
+app.use(mainRoute);
 
 
 
@@ -65,7 +62,6 @@ const io = new Server(httpServer, {
   }
 });
 io.on('connection', websocketService )
-
 
 //for performancet monitoring on socket-io-admin
 instrument(io, { auth: false })

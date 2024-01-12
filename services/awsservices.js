@@ -2,6 +2,7 @@ const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 const bucketName = process.env.BUCKET_NAME;
+
 const s3Client = new S3Client({
   region: "ap-south-1",
   credentials: {

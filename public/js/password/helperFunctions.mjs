@@ -1,4 +1,3 @@
-
 const alertFunction = function(div){
     div.classList.remove('d-none');
     div.classList.add('d-block');

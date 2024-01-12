@@ -1,4 +1,4 @@
-
+// Importing modules and packages
 const User = require('../models/users');
 const ForgotPasswords = require('../models/forgot-password');
 const bcrypt = require('bcrypt');
@@ -7,6 +7,7 @@ const client = Sib.ApiClient.instance;
 client.authentications['api-key'].apiKey = process.env.SIB_API_KEY;
 const tranEmailApi = new Sib.TransactionalEmailsApi();
 
+// Function to send a password reset email
 exports.userResetpasswordMail = async (request, response, next) => {
     try {
         
@@ -68,9 +69,11 @@ exports.userResetpasswordMail = async (request, response, next) => {
 
     } catch (error) {
         console.log(error);
-        response.status(500).json({ message: 'Interenal Server Error' });
+        response.status(500).json({ message: 'Interenal Server Error1' });
     }
 }
+
+// Function to handle the password reset link access
 exports.userResetpasswordform = async (request, response, next) => {
     try {
         let forgotId = request.params.forgotId;
@@ -88,6 +91,7 @@ exports.userResetpasswordform = async (request, response, next) => {
     }
 }
 
+// Function to handle the password reset
 exports.userResetpassword = async (request, response, next) => {
     try {
         const { resetid, newpassword } = request.body;
