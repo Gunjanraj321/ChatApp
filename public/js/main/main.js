@@ -177,7 +177,7 @@ async function on_SendMessage(e) {
             if(formElements.flexLabel.innerText === "text"){
                 const data = {
                     message: formElements.messageInput.value,
-                    GroupId: groupId
+                    groupId: groupId
                 }
                 await axios.post('user/post-message', data);
             }else{
@@ -185,8 +185,8 @@ async function on_SendMessage(e) {
                 if (file && file.type.startsWith('image/')){
                     const formData = new FormData();
                     formData.append('image', file);
-                    formData.append('GroupId',groupId)
-                    const imageResponse = await axios.post('user/post-image',formData)
+                    formData.append('groupId',groupId)
+                    const imageResponse = await axios.post('/user/post-image',formData)
                 }else{
                     alert('Please select a valid image file.');
                 }              
@@ -217,12 +217,12 @@ async function ShowCommonChats() {
         if (chats && chats.length!=2) {
             const parsedChatHistory = JSON.parse(chats);
             const lastMessageId = parsedChatHistory[parsedChatHistory.length - 1].messageId;
-            const APIresponse = await axios(`user/get-messages?lastMessageId=${lastMessageId}`);
+            const APIresponse = await axios(`/user/get-messages?lastMessageId=${lastMessageId}`);
             const apiChats = APIresponse.data.chats
             const mergedChats = [...parsedChatHistory, ...apiChats];
             savingChats = mergedChats.slice(-1000);
         } else {
-            const APIresponse = await axios(`user/get-messages?lastMessageId=0`);
+            const APIresponse = await axios(`/user/get-messages?lastMessageId=0`);
             const apiChats = APIresponse.data.chats
             savingChats = apiChats.slice(-1000);
         }
@@ -239,7 +239,7 @@ async function ShowCommonChats() {
 }
 async function showGroupChats(groupId) {
     try {
-        const APIresponse = await axios.get(`user/get-group-messages?groupId=${groupId}`);
+        const APIresponse = await axios.get(`/user/get-group-messages?groupId=${groupId}`);
         const apiChats = APIresponse.data.chats
         const getUserResponse = await axios.get('/user/get-user');
         const userId = getUserResponse.data.userId
@@ -252,7 +252,7 @@ async function showGroupChats(groupId) {
 async function showingAllUser() {
     try {
         user_list.parentElement.classList.remove('d-none');
-        const usersResponse = await axios.get('user/get-users');
+        const usersResponse = await axios.get('/user/get-users');
         user_list.innerHTML = "";
         let text = ""
         const { users } = usersResponse.data;
@@ -313,7 +313,7 @@ async function showingGroupDetails(e) {
         })
         user_list.innerHTML = text;
 
-        const GroupApiresponse = await axios(`user/get-group?groupId=${groupId}`);
+        const GroupApiresponse = await axios(`/user/get-group?groupId=${groupId}`);
         const { group } = GroupApiresponse.data;
         modelElements.groupName.value = group.name;
         model_submibtn.innerHTML = "Update Details";
@@ -377,7 +377,7 @@ async function showGroupChat(e) {
             if (groupId == 0) {
                 ShowCommonChats();
             } else {
-                const APIresponse = await axios(`user/get-group-messages?groupId=${groupId}`);
+                const APIresponse = await axios(`/user/get-group-messages?groupId=${groupId}`);
                 const apiChats = APIresponse.data.chats
                 showChatOnScreen(apiChats, userId)
             }
@@ -402,7 +402,7 @@ async function setupGroup(groupId, userId) {
             group_editbtn.classList.add('d-none')
 
         } else {
-            const APIresponse = await axios(`user/get-group?groupId=${groupId}`);
+            const APIresponse = await axios(`/user/get-group?groupId=${groupId}`);
             const { group } = APIresponse.data;
             group_img.src = `https://picsum.photos/seed/${groupId}/200`;
             group_heading.innerHTML = `${group.name}`;
@@ -429,10 +429,10 @@ async function setupGroup(groupId, userId) {
 async function setupProfile() {
     try {
         const getUserResponse = await axios.get('/user/get-user');
-        const {name,email,phonenumber,imageUrl} = getUserResponse.data.user;
+        const {name,email,phoneNumber,imageUrl} = getUserResponse.data.user;
         profileModel.name.innerText = name,
         profileModel.email.innerText = email,
-        profileModel.phoneNumber.innerText = phonenumber,
+        profileModel.phoneNumber.innerText = phoneNumber,
         profileModel.image.src = `https://picsum.photos/seed/${imageUrl}/200`
     } catch (error) {
         console.log(error);

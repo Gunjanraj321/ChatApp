@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../util/database')
 
 const User = sequelize.define(
-  "User",
+  "user",
   {
     id: {
       type: Sequelize.INTEGER,
@@ -18,7 +18,7 @@ const User = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    phonenumber: {
+    phoneNumber: {
       type: Sequelize.BIGINT(10),
       unique: true,
       allowNull: false,

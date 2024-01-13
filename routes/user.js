@@ -3,7 +3,6 @@ const express = require('express');
 
 //importing modules
 const userController = require('../controllers/user')
-const passwordController = require('../controllers/resetPassword')
 const mainPageController = require('../controllers/mainPage')
 const signController = require('../controllers/signup&signin')
 const authController = require('../middleware/authentication')
@@ -14,16 +13,16 @@ const upload = multerMiddleware.multer.single('image');
 const router = express.Router();
 
 
-//route definition for signin and signup
-router.post('/signup',signController.userSignup);
-router.post('/signin',signController.userSignin);
+// //route definition for signin and signup
+// router.post('/signup',signController.userSignup);
+// router.post('/signin',signController.userSignin);
 
 
 
 //route definition for password
-router.post('/forgotpassword',passwordController.userResetpasswordMail)
-router.get('/reset/:forgotId', passwordController.userResetpasswordform)
-router.post('/password-reset',passwordController.userResetpassword)
+// router.post('/forgotpassword',passwordController.userResetpasswordMail)
+// router.get('/reset/:forgotId', passwordController.userResetpasswordform)
+// router.post('/password-reset',passwordController.userResetpassword)
 
 
 

@@ -4,7 +4,7 @@ exports.getHomepage = (request, response, next) => {
 };
 // Function to serve the notfound.html file
 exports.getErrorpage = (request, response, next) => {
-  response.sendFile("notfound.html", { root: "views" });
+  response.sendFile("not-found.html", { root: "views" });
 };
 //Function to server main file with their corresponding route
 exports.getMainpage = (request, response, next) => {

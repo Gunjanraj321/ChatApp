@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-const Groupmember = sequelize.define('GroupMembers',{
+const Groupmember = sequelize.define('groupMembers',{
     id:{
         type:Sequelize.INTEGER,
         autoIncrement: true,

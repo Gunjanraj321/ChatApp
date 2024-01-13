@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-const ArchivedChat = sequelize.define('ArchivedChat',{
+const ArchivedChat = sequelize.define('archivedChat',{
     id: {
       type: Sequelize.BIGINT,
       autoIncrement: true,
@@ -20,10 +20,10 @@ const ArchivedChat = sequelize.define('ArchivedChat',{
       type: Sequelize.DATE,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
-    UserId:{
+    userId:{
       type: Sequelize.BIGINT,
     },
-    GroupId:{
+    groupId:{
       type: Sequelize.BIGINT,
     }
   },

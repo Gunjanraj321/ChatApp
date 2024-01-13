@@ -4,7 +4,7 @@ import helperFunctions from "/js/home/helperFunctions.mjs";
 const signupElements = {
     name: signup_form.querySelector('input[name="Name"]'),
     email: signup_form.querySelector('input[name="Email"]'),
-    phoneNo: signup_form.querySelector('input[name="PhoneNumber"]'),
+    phoneNo: signup_form.querySelector('input[name="phoneNumber"]'),
     password1: signup_form.querySelector('input[name="Password1"]'),
     password2: signup_form.querySelector('input[name="Password2"]'),
     signup_btn: signup_form.querySelector('input[type="submit"]'),
@@ -22,11 +22,11 @@ async function on_Signup(e) {
                 const data = {
                     name: signupElements.name.value,
                     email: signupElements.email.value,
-                    phonenumber: signupElements.phoneNo.value,
+                    phoneNumber: signupElements.phoneNo.value,
                     imageUrl:Math.floor(Math.random() * 1000),
                     password: signupElements.password1.value
                 }
-               await axios.post("user/signup", data);
+               await axios.post("/user/signup", data);
 
                 signup_form.reset();
                 helperFunctions.alertFunction(signupElements.alert3);
@@ -68,7 +68,7 @@ async function onSignin(e) {
                 email: SigninElements.email.value,
                 password: SigninElements.password.value
             }
-            const signinResponse = await axios.post("user/signin", data);
+            const signinResponse = await axios.post("/user/signin", data);
             signin_form.reset();
             helperFunctions.alertFunction(SigninElements.alert3);
             setTimeout(() => {
@@ -105,7 +105,7 @@ async function Forgotpassword(e) {
             const data = {
                 email: ForgotModalELements.email.value
             }
-            await axios.post('user/forgotpassword', data);
+            await axios.post('/user/forgotpassword', data);
             helperFunctions.alertFunction(ForgotModalELements.alert2);
             forgot_form.reset();
             setTimeout(()=>{

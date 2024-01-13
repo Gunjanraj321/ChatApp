@@ -30,6 +30,8 @@ cronService.job.start();
 //importing the routes
 const mainRoute = require('./routes/home');
 const userRoute = require('./routes/user');
+const resetPasswordRoute = require('./routes/forgot-password');
+const signupSigninRoute = require('./routes/authenticationRoute');
 
 const accessLogStream = fs.createWriteStream('./access.log', { flags: 'a' });
 
@@ -49,6 +51,8 @@ app.use(cookieParser());
 
 //defining the route definition
 app.use('/user',userRoute);
+app.use('/user',signupSigninRoute);
+app.use('/user',resetPasswordRoute)
 app.use(mainRoute);
 
 
@@ -74,7 +78,7 @@ ChatHistory.belongsTo(User, { constraints: true });
 User.belongsToMany(Groups, { through: GroupMember });
 Groups.belongsToMany(User, { through: GroupMember });
 Groups.belongsTo(User, {
-  foreignKey: "AdminId",
+  foreignKey: "adminId",
   constraints: true,
   onDelete: "CASCADE",
 });
@@ -86,7 +90,9 @@ ChatHistory.belongsTo(Groups);
 const PORT = process.env.PORT || 3000;
 async function initiate() {
     try {
-      const res = await sequelize.sync();                                                           //await sequelize.query("SET FOREIGN_KEY_CHECKS = 0"); //Remove foreign key constraints                                                                     
+      // await sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+      const res = await sequelize.sync({force:false});   
+      // await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");                                                         //await sequelize.query("SET FOREIGN_KEY_CHECKS = 0"); //Remove foreign key constraints                                                                     
       httpServer.listen(PORT, () => {                                                               //await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");                                                                            
         console.log(`Server is running on port ${PORT} `);                                          //drop tables
       });                                                                                           // Restore foreign key constraints

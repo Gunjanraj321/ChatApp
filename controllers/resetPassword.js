@@ -48,7 +48,7 @@ exports.userResetpasswordMail = async (request, response, next) => {
                                             <h1 class="text-center">Reset Your Password</h1>
                                             <p class="text-center">Click the button below to reset your admin account password:</p>
                                             <div class="text-center">
-                                                <a href="${process.env.WEBSITE}/user/reset/{{params.role}}" class="btn btn-primary">Reset Password</a>
+                                                <a href="${process.env.WEBSITE}/user/forgotPassword/{{params.role}}" class="btn btn-primary">Reset Password</a>
                                             </div>
                                         </div>
                                     </div>

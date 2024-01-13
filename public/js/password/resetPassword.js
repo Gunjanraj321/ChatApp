@@ -13,7 +13,7 @@ async function onReset(e) {
                     resetid: lastPart,
                     newpassword: password.value,
                 };
-               await axios.post("/user/password-reset", data);
+               await axios.post("/user/forgotPassword/reset", data);
                resetpasswordform.reset();
                helperFunctions.alertFunction(alert2);
                setTimeout(()=>{

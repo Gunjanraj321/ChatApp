@@ -9,15 +9,15 @@ const { Op } = require('sequelize');
 exports.saveChatHistory = async (request, response, next) => {
     try {
         const user = request.user;
-        const { message, GroupId } = request.body;
-        if (GroupId == 0) {
+        const { message, groupId } = request.body;
+        if (groupId == 0) {
             await user.createChatHistory({
                 message,
             })
         } else {
             await user.createChatHistory({
                 message,
-                GroupId,
+                groupId,
             })
         }
         return response.status(200).json({ message: "Message saved to database succesfully" })
@@ -53,14 +53,14 @@ exports.getAllChatHistory = async (request, response, next) => {
             ],
             order: [['date_time', 'ASC']],
             where: {
-                GroupId: null,
+                groupId: null,
                 id: {
                     [Op.gt]: lastMessageId
                 }
             }
         });
         const chats = chatHistories.map((ele) => {
-            const user = ele.User;
+            const user = ele.user;
             return {
                 messageId: ele.id,
                 message: ele.message,
@@ -115,7 +115,7 @@ exports.createGroup = async (request, response, next) => {
         const group = await user.createGroup({
             name,
             membersNo,
-            AdminId: user.id
+            adminId: user.id
         })
         membersIds.push(user.id);
         await group.addUsers(membersIds.map((ele) => {
@@ -140,7 +140,7 @@ exports.updateGroup = async (request, response, next) => {
         const updatedGroup = await group.update({
             name,
             membersNo,
-            AdminId: user.id
+            adminId: user.id
         })
         membersIds.push(user.id);
         await updatedGroup.setUsers(null);
@@ -181,11 +181,11 @@ exports.getGroupChatHistory = async (request, response, next) => {
             ],
             order: [['date_time', 'ASC']],
             where: {
-                GroupId: Number(groupId),
+                groupId: Number(groupId),
             }
         });
         const chats = chatHistories.map((ele) => {
-            const user = ele.User;
+            const user = ele.user;
             return {
                 messageId: ele.id,
                 message: ele.message,
@@ -255,10 +255,10 @@ exports.saveChatImages = async (request, response, next) => {
     try {
         const user = request.user;
         const image = request.file;
-        const { GroupId } = request.body;
-        const filename = `chat-images/group${GroupId}/user${user.id}/${Date.now()}_${image.originalname}`;
+        const { groupId } = request.body;
+        const filename = `chat-images/group${groupId}/user${user.id}/${Date.now()}_${image.originalname}`;
         const imageUrl = await awsService.uploadToS3(image.buffer, filename)
-        if (GroupId == 0) {
+        if (groupId == 0) {
             await user.createChatHistory({
                 message: imageUrl,
                 isImage: true
@@ -266,7 +266,7 @@ exports.saveChatImages = async (request, response, next) => {
         } else {
             await user.createChatHistory({
                 message: imageUrl,
-                GroupId,
+                groupId,
                 isImage: true
             })
         }

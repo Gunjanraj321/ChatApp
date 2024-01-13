@@ -7,10 +7,10 @@ const { Op } = require("sequelize");
 // signup user and signing the token using jwt and passing in the cookie
 exports.userSignup = async (request, response, next) => {
   try {
-    const { name, email, phonenumber, imageUrl, password } = request.body;
+    const { name, email, phoneNumber, imageUrl, password } = request.body;
     let userExist = await User.findOne({
       where: {
-        [Op.or]: [{ email }, { phonenumber }],
+        [Op.or]: [{ email }, { phoneNumber }],
       },
     });
     if (!userExist) {
@@ -18,7 +18,7 @@ exports.userSignup = async (request, response, next) => {
       const user = await User.create({
         name,
         email,
-        phonenumber,
+        phoneNumber,
         imageUrl,
         password: hash,
       });
