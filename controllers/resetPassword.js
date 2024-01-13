@@ -1,4 +1,4 @@
-// Importing modules and packages
+
 const User = require('../models/users');
 const ForgotPasswords = require('../models/forgot-password');
 const bcrypt = require('bcrypt');
@@ -7,11 +7,11 @@ const client = Sib.ApiClient.instance;
 client.authentications['api-key'].apiKey = process.env.SIB_API_KEY;
 const tranEmailApi = new Sib.TransactionalEmailsApi();
 
-// Function to send a password reset email
-exports.userResetpasswordMail = async (request, response, next) => {
+exports.userResetPasswordMail = async (request, response, next) => {
     try {
         
         const { email } = request.body;
+        // console.log(email)
         const user= await User.findOne({
             where: {
                 email: email
@@ -27,8 +27,10 @@ exports.userResetpasswordMail = async (request, response, next) => {
                     email: email
                 }
             ]
-            const resetresponse = await user.createForgotpassword({});
+            // console.log('--------------')
+            const resetresponse = await user.createForgotPassword({});
             const { id } = resetresponse;
+            console.log(resetresponse)
             const mailresponse = await tranEmailApi.sendTransacEmail({
                 sender,
                 to: receivers,
@@ -69,12 +71,10 @@ exports.userResetpasswordMail = async (request, response, next) => {
 
     } catch (error) {
         console.log(error);
-        response.status(500).json({ message: 'Interenal Server Error1' });
+        response.status(500).json({ message: 'Interenal Server Error' });
     }
 }
-
-// Function to handle the password reset link access
-exports.userResetpasswordform = async (request, response, next) => {
+exports.userResetPasswordForm = async (request, response, next) => {
     try {
         let forgotId = request.params.forgotId;
         const passwordreset = await ForgotPasswords.findByPk(forgotId);
@@ -90,16 +90,15 @@ exports.userResetpasswordform = async (request, response, next) => {
 
     }
 }
-
-// Function to handle the password reset
-exports.userResetpassword = async (request, response, next) => {
+exports.userResetPassword = async (request, response, next) => {
     try {
         const { resetid, newpassword } = request.body;
+        
         const passwordreset = await ForgotPasswords.findByPk(resetid);
         const currentTime = new Date();
         const createdAtTime = new Date(passwordreset.createdAt);
         const timeDifference = currentTime - createdAtTime;
-        const timeLimit = 5 * 60 * 1000; 
+        const timeLimit = 15 * 60 * 1000; 
         if(timeDifference <= timeLimit){
             const hashedPassword = await bcrypt.hash(newpassword, 10);
           await User.update(
@@ -107,7 +106,7 @@ exports.userResetpassword = async (request, response, next) => {
                     password: hashedPassword
                 },
                 {
-                    where: { id: passwordreset.UserId }
+                    where: { id: passwordreset.userId }
                 }
             );
             response.status(200).json({ message: "Password reset successful." });

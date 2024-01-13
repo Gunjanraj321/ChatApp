@@ -6,9 +6,10 @@ const passwordController = require('../controllers/resetPassword')
 
 
 //route definition for password
-router.post('/',passwordController.userResetpasswordMail);
-router.get('/:forgotId', passwordController.userResetpasswordform);
-router.post('/reset',passwordController.userResetpassword);
+
+router.get('/:forgotId', passwordController.userResetPasswordForm);
+router.post('/',passwordController.userResetPasswordMail);
+router.post('/reset',passwordController.userResetPassword);
 
 
 module.exports = router;

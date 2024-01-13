@@ -13,7 +13,7 @@ require('dotenv').config();
 //importing the modules 
 const sequelize = require('./util/database');
 const User = require('./models/users');
-const Forgotpasswords = require('./models/forgot-password');
+const ForgotPasswords = require('./models/forgot-password');
 const ChatHistory = require('./models/chat-history');
 const Groups = require("./models/groups");
 const GroupMember = require('./models/group-members');
@@ -71,8 +71,8 @@ io.on('connection', websocketService )
 instrument(io, { auth: false })
 
 // defining relationship between the models 
-User.hasMany(Forgotpasswords,{ as: 'forgotPasswords' });
-Forgotpasswords.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(ForgotPasswords, { as: 'forgotPasswords' });
+ForgotPasswords.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(ChatHistory);
 ChatHistory.belongsTo(User, { constraints: true });
 User.belongsToMany(Groups, { through: GroupMember });

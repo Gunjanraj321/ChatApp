@@ -13,8 +13,8 @@ const signupElements = {
     alert3: signup_form.querySelector('#alert3'),
 }
 
-signupElements.signup_btn.addEventListener('click', on_Signup);
-async function on_Signup(e) {
+signupElements.signup_btn.addEventListener('click', onSignup);
+async function onSignup(e) {
     try {
         if (signup_form.checkValidity()) {
             e.preventDefault();
@@ -50,7 +50,7 @@ async function on_Signup(e) {
 }
 
 //ON  SIGN IN 
-const SigninElements = {
+const signinElements = {
     email: signin_form.querySelector('input[name="Email"]'),
     password: signin_form.querySelector('input[name="Password"]'),
     signin_btn: signin_form.querySelector('input[type="submit"]'),
@@ -59,18 +59,18 @@ const SigninElements = {
     alert3: signin_form.querySelector('#alert3'),
 
 }
-SigninElements.signin_btn.addEventListener('click', onSignin);
+signinElements.signin_btn.addEventListener('click', onSignin);
 async function onSignin(e) {
     try {
         if (signin_form.checkValidity()) {
             e.preventDefault();
             const data = {
-                email: SigninElements.email.value,
-                password: SigninElements.password.value
+                email: signinElements.email.value,
+                password: signinElements.password.value
             }
             const signinResponse = await axios.post("/user/signin", data);
             signin_form.reset();
-            helperFunctions.alertFunction(SigninElements.alert3);
+            helperFunctions.alertFunction(signinElements.alert3);
             setTimeout(() => {
                 window.location.href = "/user";
             }, 3000)
@@ -78,9 +78,9 @@ async function onSignin(e) {
 
     } catch (error) {
         if (error.response && error.response.status === 401) {
-            helperFunctions.alertFunction(SigninElements.alert2)
+            helperFunctions.alertFunction(signinElements.alert2)
         } else if (error.response && error.response.status === 409) {
-            helperFunctions.alertFunction(SigninElements.alert1)
+            helperFunctions.alertFunction(signinElements.alert1)
         } else {
             alert("Something went wrong - Sign in again");
             console.log(error);
