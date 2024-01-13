@@ -91,22 +91,22 @@ async function onSignin(e) {
 
 //ON  FORGOTPASSWORD 
 
-const ForgotModalELements = {
-    email: forgot_form.querySelector('input[name="Email"]'),
+const forgotModalELements = {
+    email: forgot_form.querySelector('input[name="email"]'),
     submit_btn: forgot_form.querySelector('input[type="submit"]'),
     alert1: forgot_form.querySelector('#alert1'),
     alert2: forgot_form.querySelector('#alert2'),
 }
-ForgotModalELements.submit_btn.addEventListener('click', Forgotpassword);
-async function Forgotpassword(e) {
+forgotModalELements.submit_btn.addEventListener('click', forgotPassword);
+async function forgotPassword(e) {
     try {
         if (e.target && e.target.classList.contains("submit") && forgot_form.checkValidity()) {
             e.preventDefault();
             const data = {
-                email: ForgotModalELements.email.value
+                email: forgotModalELements.email.value
             }
-            await axios.post('/user/forgotpassword', data);
-            helperFunctions.alertFunction(ForgotModalELements.alert2);
+            await axios.post('/user/forgotPassword', data);
+            helperFunctions.alertFunction(forgotModalELements.alert2);
             forgot_form.reset();
             setTimeout(()=>{
                 $('#forgotPassword_modal').modal('hide');
@@ -116,7 +116,7 @@ async function Forgotpassword(e) {
 
     } catch (error) {
         if (error.response && error.response.status === 404) {
-            helperFunctions.alertFunction(ForgotModalELements.alert1);
+            helperFunctions.alertFunction(forgotModalELements.alert1);
 
         } else {
             console.log("Error occured while sending mail.", error);

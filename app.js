@@ -28,9 +28,9 @@ const cronService = require('./services/cron');
 cronService.job.start();
 
 //importing the routes
-const mainRoute = require('./routes/home');
-const userRoute = require('./routes/user');
-const resetPasswordRoute = require('./routes/forgot-password');
+const mainRoute = require('./routes/homeRoute');
+const userRoute = require('./routes/userRoute');
+const resetPasswordRoute = require('./routes/resetPasswordRoute');
 const signupSigninRoute = require('./routes/authenticationRoute');
 
 const accessLogStream = fs.createWriteStream('./access.log', { flags: 'a' });
@@ -52,7 +52,7 @@ app.use(cookieParser());
 //defining the route definition
 app.use('/user',userRoute);
 app.use('/user',signupSigninRoute);
-app.use('/user',resetPasswordRoute)
+app.use('/user/forgotPassword',resetPasswordRoute)
 app.use(mainRoute);
 
 
@@ -71,7 +71,7 @@ io.on('connection', websocketService )
 instrument(io, { auth: false })
 
 // defining relationship between the models 
-User.hasMany(Forgotpasswords);
+User.hasMany(Forgotpasswords,{ as: 'forgotPasswords' });
 Forgotpasswords.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(ChatHistory);
 ChatHistory.belongsTo(User, { constraints: true });
